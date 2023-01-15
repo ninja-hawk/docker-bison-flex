@@ -20,19 +20,21 @@ factor: '(' expr ')'  { $$ = $2; }
       ;
 %%
 
+%{
 #include <ctype.h>
 #include <stdio.h>
+}%
 
-yylex(){  /* 字句解析関数 */
+int yylex(){  /* 字句解析関数 */
   int c;
 
-  while ((c = getchar()) == ' '); /* 空白を読み飛ばす */
+  while ((c = getchar()) == ' '); 
   if(isdigit(c)){ /* 数字の処理 */
     yylval = c - '0'; 
     while(isdigit(c = getchar())) /* 数字列をint型へ */
       yylval = yylval*10 + (c-'0'); /* 入力文字をもとに戻す */
     ungetc(c,stdin);  /* 空白、数字以外の文字 */
+  }
     else
       return c;
-  }
 }
